@@ -8972,6 +8972,11 @@ vue-hot-reload-api@^2.3.0:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
 
+vue-i18n@^8.24.0:
+  version "8.24.0"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.24.0.tgz#f4a4fe553738f101a672f4da06a14942d1e64fc4"
+  integrity sha512-tRVmPN36Dv+fLeZW5AzoNsZwjV2y2+UdHROaTewUgSG2YLjOj4dFmai4T5PPZtIdRnDnUdwbAwdufCG6fPSegA==
+
 vue-loader@^15.7.0:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-15.7.2.tgz#cc89e2716df87f70fe656c9da9d7f8bec06c73d6"
@@ -9018,6 +9023,11 @@ vue@^2.6.11:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
+
+vuex@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.6.2.tgz#236bc086a870c3ae79946f107f16de59d5895e71"
+  integrity sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw==
 
 watchpack@^1.6.0:
   version "1.6.0"

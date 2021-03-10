@@ -7,9 +7,6 @@
           <b-row class="justify-content-center">
             <b-col xl="5" lg="6" md="8" class="px-5">
               <h1 class="text-white">¡Bienvenido!</h1>
-              <p class="text-lead text-white" hidden>Use these awesome forms to login or create new account in your
-                project for
-                free.</p>
             </b-col>
           </b-row>
         </div>
@@ -26,22 +23,11 @@
       <b-row class="justify-content-center">
         <b-col lg="5" md="7">
           <b-card no-body class="bg-secondary border-0 mb-0">
-            <b-card-header class="bg-transparent pb-5" hidden>
-              <div class="text-muted text-center mt-2 mb-3"><small>Sign in with</small></div>
-              <div class="btn-wrapper text-center">
-                <a href="#" class="btn btn-neutral btn-icon">
-                  <span class="btn-inner--icon"><img src="img/icons/common/github.svg"></span>
-                  <span class="btn-inner--text">Github</span>
-                </a>
-                <a href="#" class="btn btn-neutral btn-icon">
-                  <span class="btn-inner--icon"><img src="img/icons/common/google.svg"></span>
-                  <span class="btn-inner--text">Google</span>
-                </a>
-              </div>
-            </b-card-header>
             <b-card-body class="px-lg-5 py-lg-5">
+              <b-alert variant="info">
+                Has salido exitosamente
+              </b-alert>
               <div class="text-center text-muted mb-4">
-                <small hidden>Or sign in with credentials</small>
                 <small>Identifícate en la aplicación</small>
               </div>
               <validation-observer v-slot="{handleSubmit}" ref="formValidator">
@@ -91,8 +77,15 @@
   import router from '../../routes/router'
 
   export default {
+    mounted () {
+      if(sessionStorage.setItem('logout', 'logout')){
+        sessionStorage.clear()
+        this.logout = true
+      }
+    },
     data () {
       return {
+        logout: false,
         error: false,
         model: {
           email: '',
@@ -107,11 +100,13 @@
           .then((response) => {
             if (response && response.hasOwnProperty('data') &&
               response.data.hasOwnProperty('user') &&
-              response.data.hasOwnProperty('token')) {
+              response.data.hasOwnProperty('access_token')) {
               let data = response.data
               localStorage.setItem('user', JSON.stringify(data.user))
-              localStorage.setItem('token', data.token)
-              axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+              localStorage.setItem('access_token', data.access_token)
+              localStorage.setItem('token_type', data.token_type);
+              localStorage.setItem('token_expires', data.token_expires);
+              axios.defaults.headers.common['Authorization'] = `${data.token_type} ${data.token}`
               router.push('/dashboard')
             }
           }).catch((error) => {

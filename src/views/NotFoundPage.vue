@@ -7,9 +7,10 @@
           <b-row class="justify-content-center">
             <b-col xl="5" lg="6" md="6" class="px-5">
               <h1 class="text-light">Ooops!</h1>
-              <p class="text-lead text-white">Page not found. Don't worry though, we have plenty of other pages to explore</p>
+              <p class="text-lead text-white">Página no encontrada. Pero no te preocupes, tenemos otras páginas que
+                puedes explorar</p>
 
-              <router-link to="/dashboard" class="font-weight-bold text-white mt-5">Back to dashboard</router-link>
+              <router-link to="/dashboard" class="font-weight-bold text-white mt-5">Volver al escritorio</router-link>
             </b-col>
           </b-row>
         </div>
@@ -29,9 +30,12 @@
           </b-col>
           <b-col md="6">
             <div class="pr-md-5">
-              <h1 class="text-light">Explore pages</h1>
+              <h1 class="text-light">Explorar páginas</h1>
               <p class="text-light">If you want to get inspiration or just show something directly to your clients, you can jump start your development with our pre-built example pages.</p>
-              <router-link to="/user" class="font-weight-bold text-warning mt-5">Explore pages</router-link>
+              <p class="text-light">Puedes obtener ayuda desde el menú de usuario dando clic al enlace de soporte o
+                puedes dar clic en el siguiente enlace para ver nuestro foro de ayuda.
+                .</p>
+              <router-link to="/support" class="font-weight-bold text-warning mt-5">Soporte</router-link>
             </div>
           </b-col>
         </b-row>

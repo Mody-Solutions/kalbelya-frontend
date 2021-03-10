@@ -1,7 +1,7 @@
 <template>
   <div class="main-content bg-default">
     <base-nav
-      v-show="showMenu"
+      v-model="showMenu"
       :transparent="true"
       menu-classes="justify-content-end"
       class="navbar-horizontal navbar-main navbar-top navbar-dark"
@@ -13,41 +13,46 @@
         </b-navbar-brand>
       </div>
 
-     <template>
-       <div class="navbar-collapse-header">
-         <b-row>
-           <b-col cols="6" class="collapse-brand">
-             <router-link to="/">
-               <img src="img/brand/green.png">
-             </router-link>
-           </b-col>
-           <b-col cols="6" class="collapse-close">
-             <button type="button" class="navbar-toggler" @click="showMenu = false">
-               <span></span>
-               <span></span>
-             </button>
-           </b-col>
-         </b-row>
-       </div>
-         <b-navbar-nav  class="align-items-lg-center ml-lg-auto">
-           <b-nav-item to="/dashboard">
-               <i class="ni ni-planet"></i>
-               <span class="nav-link-inner--text">Dashboard</span>
-           </b-nav-item>
-           <b-nav-item to="/register">
-               <i class="ni ni-circle-08"></i>
-               <span class="nav-link-inner--text">Register</span>
-           </b-nav-item>
-           <b-nav-item to="/login">
-               <i class="ni ni-key-25"></i>
-               <span class="nav-link-inner--text">Login</span>
-           </b-nav-item>
-           <b-nav-item to="/profile">
-               <i class="ni ni-single-02"></i>
-               <span class="nav-link-inner--text">Profile</span>
-           </b-nav-item>
-       </b-navbar-nav>
-     </template>
+      <template>
+        <div class="navbar-collapse-header">
+          <b-row>
+            <b-col cols="6" class="collapse-brand">
+              <router-link to="/">
+                <img src="img/brand/green.png">
+              </router-link>
+            </b-col>
+            <b-col cols="6" class="collapse-close">
+              <button type="button" class="navbar-toggler" @click="showMenu = false">
+                <span></span>
+                <span></span>
+              </button>
+            </b-col>
+          </b-row>
+        </div>
+        <b-navbar-nav class="align-items-lg-center ml-lg-auto">
+          <b-nav-item to="/dashboard" v-if="isLogin">
+            <i class="ni ni-planet"></i>
+            <span class="nav-link-inner--text">Escritorio</span>
+          </b-nav-item>
+          <b-nav-item to="/register" v-if="!isLogin">
+            <i class="ni ni-circle-08"></i>
+            <span class="nav-link-inner--text">Crear cuenta</span>
+          </b-nav-item>
+          <b-nav-item to="/login" v-if="!isLogin">
+            <i class="ni ni-key-25"></i>
+            <span class="nav-link-inner--text">Entrar</span>
+          </b-nav-item>
+          <b-nav-item to="/profile" v-if="isLogin">
+            <i class="ni ni-single-02"></i>
+            <span class="nav-link-inner--text">Perfil</span>
+          </b-nav-item>
+          <div class="dropdown-divider"></div>
+          <b-nav-item to="/logout" v-if="isLogin">
+            <i class="ni ni-user-run"></i>
+            <span class="nav-link-inner--text">Salir</span>
+          </b-nav-item>
+        </b-navbar-nav>
+      </template>
     </base-nav>
 
     <div class="main-content">
@@ -60,26 +65,23 @@
     </div>
 
     <footer class="py-5" id="footer-main">
-      <b-container >
+      <b-container>
         <b-row align-v="center" class="justify-content-xl-between">
           <b-col xl="6">
             <div class="copyright text-center text-xl-left text-muted">
-              © {{year}} <a href="https://kalbelya.com" class="font-weight-bold ml-1" target="_blank">Kalbelya</a>
+              © {{year}} <a href="www.kalbelya.com" class="font-weight-bold ml-1" target="_blank">Kalbelya</a>
             </div>
           </b-col>
-          <b-col xl="6" class="col-xl-6" hidden>
-            <b-nav  class="nav-footer justify-content-center justify-content-xl-end">
-              <b-nav-item href="https://www.creative-tim.com" target="_blank" >
-                Creative Tim
+          <b-col xl="6" class="col-xl-6">
+            <b-nav class="nav-footer justify-content-center justify-content-xl-end">
+              <b-nav-item href="www.kalbelya.com/about-us" target="_blank">
+                Nosotros
               </b-nav-item>
-              <b-nav-item href="https://www.creative-tim.com/presentation" target="_blank" >
-                About Us
-              </b-nav-item>
-              <b-nav-item href="http://blog.creative-tim.com"  target="_blank">
+              <b-nav-item href="www.kalbelya.com/blog" target="_blank">
                 Blog
               </b-nav-item>
-              <b-nav-item href="https://www.creative-tim.com/license" target="_blank">
-                License
+              <b-nav-item href="www.kalbelya.com/license" target="_blank">
+                Licencia
               </b-nav-item>
             </b-nav>
           </b-col>
@@ -89,8 +91,8 @@
   </div>
 </template>
 <script>
-  import { BaseNav } from '@/components';
-  import { ZoomCenterTransition } from 'vue2-transitions';
+  import { BaseNav } from '@/components'
+  import { ZoomCenterTransition } from 'vue2-transitions'
 
   export default {
     components: {
@@ -103,56 +105,62 @@
         default: 'black'
       }
     },
-    data() {
+    data () {
       return {
+        isLogin: false,
         showMenu: false,
         menuTransitionDuration: 250,
         pageTransitionDuration: 200,
         year: new Date().getFullYear(),
         pageClass: 'login-page'
-      };
+      }
     },
     computed: {
-      title() {
-        return `${this.$route.name} Page`;
+      title () {
+        return `${this.$route.name}`
       }
     },
     methods: {
-      toggleNavbar() {
-        document.body.classList.toggle('nav-open');
-        this.showMenu = !this.showMenu;
+      toggleNavbar () {
+        document.body.classList.toggle('nav-open')
+        this.showMenu = !this.showMenu
       },
-      closeMenu() {
-        document.body.classList.remove('nav-open');
-        this.showMenu = false;
+      closeMenu () {
+        document.body.classList.remove('nav-open')
+        this.showMenu = false
       },
-      setBackgroundColor() {
-        document.body.classList.add('bg-default');
+      setBackgroundColor () {
+        document.body.classList.add('bg-default')
       },
-      removeBackgroundColor() {
-        document.body.classList.remove('bg-default');
+      removeBackgroundColor () {
+        document.body.classList.remove('bg-default')
       },
-      updateBackground() {
+      updateBackground () {
         if (!this.$route.meta.noBodyBackground) {
-          this.setBackgroundColor();
+          this.setBackgroundColor()
         } else {
           this.removeBackgroundColor()
         }
       }
     },
-    beforeDestroy() {
-      this.removeBackgroundColor();
+    beforeDestroy () {
+      this.removeBackgroundColor()
     },
-    beforeRouteUpdate(to, from, next) {
+    beforeRouteUpdate (to, from, next) {
       // Close the mobile menu first then transition to next page
       if (this.showMenu) {
-        this.closeMenu();
+        this.closeMenu()
         setTimeout(() => {
-          next();
-        }, this.menuTransitionDuration);
+          next()
+        }, this.menuTransitionDuration)
       } else {
-        next();
+        next()
       }
+    },
+    mounted () {
+      let user = localStorage.getItem('user');
+      this.model = user ? JSON.parse(user) : null;
+      this.isLogin = !!user;
     },
     watch: {
       $route: {
@@ -162,7 +170,7 @@
         }
       }
     }
-  };
+  }
 </script>
 <style lang="scss">
   $scaleSize: 0.8;

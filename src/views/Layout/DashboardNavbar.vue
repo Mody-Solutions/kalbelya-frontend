@@ -20,7 +20,7 @@
             id="navbar-search-main">
         <b-form-group class="mb-0">
           <b-input-group class="input-group-alternative input-group-merge">
-            <b-form-input placeholder="Search" type="text"> </b-form-input>
+            <b-form-input placeholder="Buscar" type="text"> </b-form-input>
 
             <div class="input-group-append">
               <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -36,41 +36,35 @@
         <a href="#" class="nav-link pr-0" @click.prevent slot="title-container">
           <b-media no-body class="align-items-center">
                   <span class="avatar avatar-sm rounded-circle">
-                    <img alt="Image placeholder" src="img/theme/team-4.jpg">
+                    <img :alt="model.name" :src="model.img">
                   </span>
             <b-media-body class="ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm  font-weight-bold">John Snow</span>
+              <span class="mb-0 text-sm  font-weight-bold">{{model.name}}</span>
             </b-media-body>
           </b-media>
         </a>
 
         <template>
-
           <b-dropdown-header class="noti-title">
-            <h6 class="text-overflow m-0">Welcome!</h6>
+            <h6 class="text-overflow m-0">¡Bienvenido!</h6>
           </b-dropdown-header>
-          <b-dropdown-item href="#!">
+          <b-dropdown-item href="/#/profile">
             <i class="ni ni-single-02"></i>
-            <span>My profile</span>
+            <span>Mi perfil</span>
           </b-dropdown-item>
-          <b-dropdown-item href="#!">
+          <b-dropdown-item href="/#/settings">
             <i class="ni ni-settings-gear-65"></i>
-            <span>Settings</span>
+            <span>Configuración</span>
           </b-dropdown-item>
-          <b-dropdown-item href="#!">
-            <i class="ni ni-calendar-grid-58"></i>
-            <span>Activity</span>
-          </b-dropdown-item>
-          <b-dropdown-item href="#!">
+          <b-dropdown-item href="/#/support">
             <i class="ni ni-support-16"></i>
-            <span>Support</span>
+            <span>Soporte</span>
           </b-dropdown-item>
           <div class="dropdown-divider"></div>
-          <b-dropdown-item href="#!">
+          <b-dropdown-item @click="processLogout()">
             <i class="ni ni-user-run"></i>
-            <span>Logout</span>
+            <span>Salir</span>
           </b-dropdown-item>
-
         </template>
       </base-dropdown>
     </b-navbar-nav>
@@ -79,6 +73,8 @@
 <script>
 import { CollapseTransition } from 'vue2-transitions';
 import { BaseNav, Modal } from '@/components';
+import axios from 'axios'
+import router from '../../routes/router'
 
 export default {
   components: {
@@ -99,12 +95,20 @@ export default {
       return this.capitalizeFirstLetter(name);
     }
   },
+  mounted () {
+    let user = localStorage.getItem('user');
+    this.model = user ? JSON.parse(user) : null;
+  },
   data() {
     return {
       activeNotifications: false,
       showMenu: false,
       searchModalVisible: false,
-      searchQuery: ''
+      searchQuery: '',
+      model: {
+        name: '',
+        img: ''
+      }
     };
   },
   methods: {
@@ -116,6 +120,14 @@ export default {
     },
     closeDropDown() {
       this.activeNotifications = false;
+    },
+    processLogout() {
+      axios.get('/api/logout')
+        .then(() => {
+          localStorage.clear()
+          sessionStorage.setItem('logout', 'logout')
+          router.push('/login')
+        })
     }
   }
 };

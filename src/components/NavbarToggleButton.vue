@@ -23,7 +23,7 @@ export default {
     },
     toggled: {
       type: Boolean,
-      default: false,
+      default: true,
       description: 'Whether button is toggled'
     }
   }

@@ -29,6 +29,8 @@ import { messages } from 'vee-validate/dist/locale/es.json'
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import router from '../routes/router'
+import VueI18n from 'vue-i18n'
 
 Object.keys(rules).forEach(rule => {
   extend(rule, {
@@ -46,12 +48,19 @@ export default {
     Vue.use(BootstrapVue)
     Vue.use(IconsPlugin)
     Vue.use(VueAxios, axios)
+    Vue.use(VueI18n)
 
     axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT
-    let token = localStorage.getItem('token')
+    let token = localStorage.getItem('access_token')
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     }
+
+    axios.get('/api/token')
+      .then(() => {})
+      .catch(() => {
+        router.push('/login')
+      })
 
     configure({
       classes: {

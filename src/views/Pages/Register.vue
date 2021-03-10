@@ -7,9 +7,6 @@
           <b-row class="justify-content-center">
             <b-col xl="5" lg="6" md="8" class="px-5">
               <h1 class="text-white">Crear una cuenta</h1>
-              <p class="text-lead text-white" hidden>Use these awesome forms to login or create new account in your
-                project for
-                free.</p>
             </b-col>
           </b-row>
         </div>
@@ -27,19 +24,6 @@
       <b-row class="justify-content-center">
         <b-col lg="6" md="8">
           <b-card no-body class="bg-secondary border-0">
-            <b-card-header class="bg-transparent pb-5" hidden>
-              <div class="text-muted text-center mt-2 mb-4"><small>Sign up with</small></div>
-              <div class="text-center">
-                <a href="#" class="btn btn-neutral btn-icon mr-4">
-                  <span class="btn-inner--icon"><img src="img/icons/common/github.svg"></span>
-                  <span class="btn-inner--text">Github</span>
-                </a>
-                <a href="#" class="btn btn-neutral btn-icon">
-                  <span class="btn-inner--icon"><img src="img/icons/common/google.svg"></span>
-                  <span class="btn-inner--text">Google</span>
-                </a>
-              </div>
-            </b-card-header>
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
                 <small>Crea una cuenta en la aplicación</small>
@@ -84,8 +68,6 @@
                               :rules="{required: true, min: 6, confirmed: 'password'}"
                               v-model="model.password_confirmation">
                   </base-input>
-                  <div class="text-muted font-italic" hidden><small>fuerza de clave: <span
-                    class="text-success font-weight-700">strong</span></small></div>
                   <b-row class=" my-4">
                     <b-col cols="12">
                       <base-input :rules="{ required: { allowFalse: false } }"

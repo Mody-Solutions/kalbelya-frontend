@@ -19,6 +19,6 @@ module.exports = {
     sourceMap: process.env.NODE_ENV !== 'production'
   },
   devServer: {
-
+    headers: { 'Access-Control-Allow-Origin': '*' }
   }
 };

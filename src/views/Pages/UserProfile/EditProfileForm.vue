@@ -2,22 +2,23 @@
   <card>
     <b-row align-v="center" slot="header" >
       <b-col cols="8">
-        <h3 class="mb-0">Edit profile </h3>
+        <h3 class="mb-0">Editar perfil </h3>
       </b-col>
       <b-col cols="4" class="text-right">
-        <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+        <a href="/#settings" class="btn btn-sm btn-primary">Configuración</a>
       </b-col>
     </b-row>
 
     <b-form @submit.prevent="updateProfile">
-      <h6 class="heading-small text-muted mb-4">User information</h6>
+      <h6 class="heading-small text-muted mb-4">Información de usuario</h6>
 
       <div class="pl-lg-4">
         <b-row>
           <b-col lg="6">
             <base-input
               type="text"
-              label="Username"
+              label="Nombre de usuario"
+              name="nombre de usuario"
               placeholder="Username"
               v-model="user.username"
             >
@@ -26,7 +27,8 @@
           <b-col lg="6">
             <base-input
               type="email"
-              label="Email address"
+              label="Correo electrónico"
+              name="correo electrónico"
               placeholder="mike@email.com"
               v-model="user.email"
             >
@@ -37,8 +39,8 @@
           <b-col lg="6">
             <base-input
               type="text"
-              label="First Name"
-              placeholder="First Name"
+              label="Nombre"
+              placeholder="Nombre"
               v-model="user.firstName"
             >
             </base-input>
@@ -46,8 +48,9 @@
           <b-col lg="6">
             <base-input
               type="text"
-              label="Last Name"
-              placeholder="Last Name"
+              label="Apellido"
+              name="Apellido"
+              placeholder="Apellido"
               v-model="user.lastName"
             >
             </base-input>
@@ -57,15 +60,16 @@
       <hr class="my-4">
 
       <!-- Address -->
-      <h6 class="heading-small text-muted mb-4">Contact information</h6>
+      <h6 class="heading-small text-muted mb-4">Información de contacto</h6>
 
       <div class="pl-lg-4">
         <b-row>
           <b-col md="12">
             <base-input
               type="text"
-              label="Address"
-              placeholder="Home Address"
+              label="Dirección"
+              name="dirección"
+              placeholder="Edificio 62"
               v-model="user.address"
             >
             </base-input>
@@ -75,8 +79,9 @@
           <b-col lg="4">
             <base-input
               type="text"
-              label="City"
-              placeholder="City"
+              label="Ciudad"
+              name="ciudad"
+              placeholder="Ciudad"
               v-model="user.city"
             >
             </base-input>
@@ -84,16 +89,18 @@
           <b-col lg="4">
             <base-input
               type="text"
-              label="Country"
-              placeholder="Country"
+              label="País"
+              name="País"
+              placeholder="España"
               v-model="user.country"
             >
             </base-input>
           </b-col>
           <b-col lg="4">
             <base-input
-              label="Postal Code"
-              placeholder="ZIP Code"
+              label="Código postal"
+              name="Código postal"
+              placeholder="90210"
               v-model="user.postalCode"
             >
             </base-input>
@@ -103,11 +110,11 @@
 
       <hr class="my-4">
       <!-- Description -->
-      <h6 class="heading-small text-muted mb-4">About me</h6>
+      <h6 class="heading-small text-muted mb-4">Sobre mi</h6>
       <div class="pl-lg-4">
-        <b-form-group label="About Me" label-class="form-control-label" class="mb-0" label-for="about-form-textaria">
-         <!--  <label class="form-control-label">About Me</label> -->
-          <b-form-textarea rows="4" value="A beautiful premium dashboard for BootstrapVue." id="about-form-textaria" placeholder="A few words about you ..."></b-form-textarea>
+        <b-form-group label="Sobre mi" label-class="form-control-label" class="mb-0" label-for="about-form-textarea">
+          <b-form-textarea rows="4" :value="user.aboutMe" id="about-form-textarea"
+                           placeholder="Unas breves palabras sobre ti..."></b-form-textarea>
         </b-form-group>
       </div>
 
@@ -119,22 +126,28 @@ export default {
   data() {
     return {
       user: {
-        company: 'Creative Code Inc.',
-        username: 'michael23',
+        name: '',
+        title: '',
+        company: '',
+        username: '',
         email: '',
-        firstName: 'Mike',
-        lastName: 'Andrew',
-        address: 'Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09',
-        city: 'New York',
-        country: 'USA',
+        firstName: '',
+        lastName: '',
+        address: '',
+        city: '',
+        country: '',
         postalCode: '',
-        aboutMe: `Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.`
+        aboutMe: ''
       }
     };
   },
+  mounted () {
+    let user = localStorage.getItem('user');
+    this.user = user ? JSON.parse(user) : null;
+  },
   methods: {
     updateProfile() {
-      alert('Your data: ' + JSON.stringify(this.user));
+
     }
   }
 };

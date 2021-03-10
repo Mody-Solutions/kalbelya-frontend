@@ -8,17 +8,17 @@
       </b-col>
       <b-col lg="6">
         <b-nav align="center" class="nav-footer justify-content-lg-end">
-          <b-nav-item href="https://www.creative-tim.com"  target="_blank">
-            Creative Tim
+          <b-nav-item href="https://www.kalbelya.com"  target="_blank">
+            Kalbelya
           </b-nav-item>
-          <b-nav-item href="https://www.creative-tim.com/presentation" target="_blank">
-           About Us
+          <b-nav-item href="https://www.kalbelya.com/about-us" target="_blank">
+           Nosotros
           </b-nav-item>
-          <b-nav-item href="http://blog.creative-tim.com" target="_blank">
+          <b-nav-item href="http://www.kalbelya.com/blog" target="_blank">
             Blog
           </b-nav-item>
-          <b-nav-item href="https://www.creative-tim.com/license" target="_blank">
-            License
+          <b-nav-item href="www.kalbelya.com/license" target="_blank">
+            Licencia
           </b-nav-item>
         </b-nav>
       </b-col>
