@@ -34,11 +34,6 @@
   import UserCard from './UserProfile/UserCard.vue'
 
   export default {
-    mounted () {
-      let user = localStorage.getItem('user')
-      this.model = user ? JSON.parse(user) : null
-      this.isLogin = !!user
-    },
     data() {
       return {
         model: {

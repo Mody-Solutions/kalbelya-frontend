@@ -157,11 +157,6 @@
         next()
       }
     },
-    mounted () {
-      let user = localStorage.getItem('user');
-      this.model = user ? JSON.parse(user) : null;
-      this.isLogin = !!user;
-    },
     watch: {
       $route: {
         immediate: true,

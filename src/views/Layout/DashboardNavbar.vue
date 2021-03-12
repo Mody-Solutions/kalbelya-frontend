@@ -122,12 +122,9 @@ export default {
       this.activeNotifications = false;
     },
     processLogout() {
-      axios.get('/api/logout')
-        .then(() => {
-          localStorage.clear()
-          sessionStorage.setItem('logout', 'logout')
-          router.push('/login')
-        })
+      const router = this.$router;
+      this.$store.dispatch('logout')
+        .then(() => router.push('/login') )
     }
   }
 };

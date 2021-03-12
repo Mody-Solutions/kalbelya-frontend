@@ -10,7 +10,7 @@ const routes = [
     component: DashboardLayout,
     meta: {
       hideFooter: true,
-      requiresAuth: ['login']
+      requiresAuth: true
     },
     children: [
       {

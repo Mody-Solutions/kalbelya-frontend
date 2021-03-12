@@ -27,8 +27,8 @@ import { extend } from 'vee-validate'
 import * as rules from 'vee-validate/dist/rules'
 import { messages } from 'vee-validate/dist/locale/es.json'
 
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+import Vuex from 'vuex'
+import store from '../plugins/store'
 import router from '../routes/router'
 import VueI18n from 'vue-i18n'
 
@@ -47,20 +47,10 @@ export default {
     Vue.use(Notifications)
     Vue.use(BootstrapVue)
     Vue.use(IconsPlugin)
-    Vue.use(VueAxios, axios)
+    Vue.use(Vuex)
+    Vue.use(router)
+    Vue.use(store)
     Vue.use(VueI18n)
-
-    axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT
-    let token = localStorage.getItem('access_token')
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    }
-
-    axios.get('/api/token')
-      .then(() => {})
-      .catch(() => {
-        router.push('/login')
-      })
 
     configure({
       classes: {
