@@ -15,17 +15,27 @@
 
 */
 import Vue from 'vue';
-import DashboardPlugin from './plugins/dashboard-plugin';
 import App from './App.vue';
-
 // router setup
 import router from './routes/router';
+import store from './plugins/store';
+import axios from 'axios'
+
+Vue.prototype.$http = axios;
+
+const token = localStorage.getItem('access_token')
+if (token) {
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+}
+
 // plugin setup
+import DashboardPlugin from './plugins/dashboard-plugin';
 Vue.use(DashboardPlugin);
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   render: h => h(App),
+  store,
   router
 });

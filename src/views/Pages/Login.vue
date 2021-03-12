@@ -73,21 +73,13 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
-  import router from '../../routes/router'
-
   export default {
-    mounted () {
-      if(sessionStorage.setItem('logout', 'logout')){
-        sessionStorage.clear()
-        this.logout = true
-      }
-    },
     data () {
       return {
         logout: false,
         error: false,
         model: {
+          app_request: 'frontend',
           email: '',
           password: '',
           rememberMe: false,
@@ -96,23 +88,17 @@
     },
     methods: {
       onSubmit () {
-        axios.post('/api/login', this.model)
+        const formValidator = this.$refs.formValidator;
+        const router = this.$router;
+        this.$store.dispatch('login', this.model)
           .then((response) => {
-            if (response && response.hasOwnProperty('data') &&
-              response.data.hasOwnProperty('user') &&
-              response.data.hasOwnProperty('access_token')) {
-              let data = response.data
-              localStorage.setItem('user', JSON.stringify(data.user))
-              localStorage.setItem('access_token', data.access_token)
-              localStorage.setItem('token_type', data.token_type);
-              localStorage.setItem('token_expires', data.token_expires);
-              axios.defaults.headers.common['Authorization'] = `${data.token_type} ${data.token}`
+            if(response.data.hasOwnProperty('user')){
               router.push('/dashboard')
+            } else {
+              formValidator.setErrors(response.data)
             }
-          }).catch((error) => {
-            // this.error = error.response.data.message || 'Hubo un error al procesar su solicitud';
-          this.$refs.formValidator.setErrors(error.response.data);
-        })
+          })
+          .catch((error) => console.log(error))
       }
     }
   }

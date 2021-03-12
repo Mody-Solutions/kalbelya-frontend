@@ -117,10 +117,6 @@
   </div>
 </template>
 <script>
-
-  import axios from 'axios'
-  import router from '../../routes/router'
-
   export default {
     name: 'register',
     data () {
