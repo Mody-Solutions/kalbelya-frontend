@@ -30,24 +30,24 @@
           </b-row>
         </div>
         <b-navbar-nav class="align-items-lg-center ml-lg-auto">
-          <b-nav-item to="/dashboard" v-if="isLogin">
+          <b-nav-item to="/dashboard" v-if="isLoggedIn">
             <i class="ni ni-planet"></i>
             <span class="nav-link-inner--text">Escritorio</span>
           </b-nav-item>
-          <b-nav-item to="/register" v-if="!isLogin">
+          <b-nav-item to="/register" v-if="!isLoggedIn">
             <i class="ni ni-circle-08"></i>
             <span class="nav-link-inner--text">Crear cuenta</span>
           </b-nav-item>
-          <b-nav-item to="/login" v-if="!isLogin">
+          <b-nav-item to="/login" v-if="!isLoggedIn">
             <i class="ni ni-key-25"></i>
             <span class="nav-link-inner--text">Entrar</span>
           </b-nav-item>
-          <b-nav-item to="/profile" v-if="isLogin">
+          <b-nav-item to="/profile" v-if="isLoggedIn">
             <i class="ni ni-single-02"></i>
             <span class="nav-link-inner--text">Perfil</span>
           </b-nav-item>
           <div class="dropdown-divider"></div>
-          <b-nav-item to="/logout" v-if="isLogin">
+          <b-nav-item to="/logout" v-if="isLoggedIn">
             <i class="ni ni-user-run"></i>
             <span class="nav-link-inner--text">Salir</span>
           </b-nav-item>
@@ -107,7 +107,7 @@
     },
     data () {
       return {
-        isLogin: false,
+        isLoggedIn: this.$store.getters.isLoggedIn,
         showMenu: false,
         menuTransitionDuration: 250,
         pageTransitionDuration: 200,

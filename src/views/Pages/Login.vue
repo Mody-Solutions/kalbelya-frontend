@@ -91,14 +91,14 @@
         const formValidator = this.$refs.formValidator;
         const router = this.$router;
         this.$store.dispatch('login', this.model)
-          .then((response) => {
-            if(response.data.hasOwnProperty('user')){
-              router.push('/dashboard')
-            } else {
+          .then(response => {
+            if(response.data.hasOwnProperty('error')){
               formValidator.setErrors(response.data)
+            } else {
+              router.push('/dashboard')
             }
           })
-          .catch((error) => console.log(error))
+          .catch(() => {})
       }
     }
   }

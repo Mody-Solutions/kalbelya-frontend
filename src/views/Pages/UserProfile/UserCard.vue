@@ -18,9 +18,9 @@
     </b-card-header>
 
     <b-card-body class="pt-0">
-      <div class="text-center mt-4">
+      <div class="text-center mt-6">
         <h5 class="h3">
-          {{user.name}}<span class="font-weight-light">, 27</span>
+          {{user.name}}<span class="font-weight-light">, {{user.age}}</span>
         </h5>
         <div class="h5 font-weight-300">
           <i class="ni location_pin mr-2"></i>{{user.city}}, {{user.country}}

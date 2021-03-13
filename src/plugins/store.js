@@ -9,17 +9,18 @@ axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT
 export default new Vuex.Store({
   state: {
     status: '',
-    token: localStorage.getItem('token') || '',
-    user: {}
+    token: localStorage.getItem('access_token') || '',
+    user: JSON.parse(localStorage.getItem('user')) || {}
   },
   mutations: {
     auth_request (state) {
       state.status = 'loading'
     },
-    auth_success (state, token, user) {
+    auth_success (state, data) {
       state.status = 'success'
-      state.token = token
-      state.user = user
+      state.token = data.token
+      state.type = data.type
+      state.user = data.user
     },
     auth_error (state) {
       state.status = 'error'
@@ -35,17 +36,15 @@ export default new Vuex.Store({
         commit('auth_request')
         axios({ url: '/login', data: user, method: 'POST' })
           .then(response => {
-            if(response.data.hasOwnProperty('user')){
-              localStorage.setItem('access_token_type', response.data.token_type)
-              localStorage.setItem('access_token', response.data.access_token)
-              localStorage.setItem('session_data', JSON.stringify(response.data))
-              axios.defaults.headers.common['Authorization'] = `${response.data.token_type} ${response.data.access_token}`
-              commit('auth_success',
-                response.data.access_token,
-                response.data.user,
-                response.data.roles,
-                response.data.permission
-                )
+            if (response.data.hasOwnProperty('user')) {
+              const token = response.data.access_token,
+                type = response.data.token_type,
+                user = response.data.user
+              commit('auth_success', { type:type, token:token, user:user })
+              localStorage.setItem('access_token', token)
+              localStorage.setItem('access_token_type', type)
+              localStorage.setItem('user', JSON.stringify(user))
+              axios.defaults.headers.common['Authorization'] = `${type} ${token}`
             }
             resolve(response)
           })
@@ -60,17 +59,22 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('auth_request')
         axios({ url: '/register', data: user, method: 'POST' })
-          .then(resp => {
-            const token = resp.data.token
-            const user = resp.data.user
-            localStorage.setItem('token', token)
-            axios.defaults.headers.common['Authorization'] = token
-            commit('auth_success', token, user)
-            resolve(resp)
+          .then(response => {
+            if (response.data.hasOwnProperty('user')) {
+              const token = response.data.access_token,
+                type = response.data.token_type,
+                user = response.data.user
+              commit('auth_success', { type: type, token: token, user: user })
+              localStorage.setItem('access_token_type', type)
+              localStorage.setItem('access_token', token)
+              localStorage.setItem('user', JSON.stringify(user))
+              axios.defaults.headers.common['Authorization'] = `${type} ${token}`
+            }
+            resolve(response)
           })
           .catch(err => {
-            commit('auth_error', err)
-            localStorage.removeItem('token')
+            commit('auth_error')
+            localStorage.removeItem('access_token')
             reject(err)
           })
       })
@@ -82,39 +86,26 @@ export default new Vuex.Store({
         sessionStorage.setItem('logout', 'logout')
         delete axios.defaults.headers.common['Authorization']
         resolve()
-        return false;
+        return false
       })
     },
-    check({ commit }) {
-      return new Promise((resolve, reject) => {
-        const type = localStorage.getItem('access_token_type')
-        const token = localStorage.getItem('access_token')
-        if(type && token){
+    check ({ commit }) {
+      return new Promise(() => {
+        let type = localStorage.getItem('access_token_type'),
+          token = localStorage.getItem('access_token'),
+          user = localStorage.getItem('user')
+        if (type && token && user) {
+          commit('auth_success', {type:type, token:token, user: JSON.parse(user)})
           axios.defaults.headers.common['Authorization'] = `${type} ${token}`
         }
-        axios({url: '/token'})
-          .then((response) => {
-            if(response.data.hasOwnProperty('user')){
-              commit('auth_success',
-                response.data.access_token,
-                response.data.user,
-                response.data.roles,
-                response.data.permission
-              )
-            }
-            resolve(response)
-          })
-          .catch((error) => {
-            localStorage.clear();
-            sessionStorage.setItem('logout', 'logout')
-            delete axios.defaults.headers.common['Authorization']
-            reject(error)
-          })
+        axios({ url: '/token' })
+          .then(() => {})
+          .catch(() => {})
       })
     }
   },
   getters: {
     isLoggedIn: state => !!state.token,
-    authStatus: state => state.status,
+    authStatus: state => state.status
   }
 })

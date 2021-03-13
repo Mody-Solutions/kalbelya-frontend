@@ -95,9 +95,8 @@ export default {
       return this.capitalizeFirstLetter(name);
     }
   },
-  mounted () {
-    let user = localStorage.getItem('user');
-    this.model = user ? JSON.parse(user) : null;
+  created () {
+    this.model = this.$store.state.user;
   },
   data() {
     return {

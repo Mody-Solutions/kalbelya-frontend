@@ -134,24 +134,20 @@
     },
     methods: {
       goToDashboard(){
-        router.push('/dashboard')
+        this.$router.push('/dashboard')
       },
       onSubmit () {
-        axios.post('/api/register', this.model)
-          .then((response) => {
-            if (response && response.hasOwnProperty('data') &&
-              response.data.hasOwnProperty('user') &&
-              response.data.hasOwnProperty('token')) {
-              this.registered = true
-              let data = response.data
-              localStorage.setItem('user', JSON.stringify(data.user))
-              localStorage.setItem('token', data.token)
-              axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-              this.message = data.message;
+        const formValidator = this.$refs.formValidator;
+        const router = this.$router;
+        this.$store.dispatch('register', this.model)
+          .then(response => {
+            if(response.data.hasOwnProperty('user')){
+              router.push('/dashboard')
+            } else {
+              formValidator.setErrors(response.data)
             }
-          }).catch((error) => {
-          this.$refs.formValidator.setErrors(error.response.data)
-        })
+          })
+          .catch(() => {})
       }
     }
 
