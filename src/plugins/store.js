@@ -29,6 +29,11 @@ export default new Vuex.Store({
       state.status = ''
       state.token = ''
     },
+    update_logged_in_user(state, user){
+      state.status = 'updated'
+      state.user = user
+      localStorage.setItem('user', JSON.stringify(user))
+    }
   },
   actions: {
     login ({ commit }, user) {
@@ -40,7 +45,7 @@ export default new Vuex.Store({
               const token = response.data.access_token,
                 type = response.data.token_type,
                 user = response.data.user
-              commit('auth_success', { type:type, token:token, user:user })
+              commit('auth_success', { type: type, token: token, user: user })
               localStorage.setItem('access_token', token)
               localStorage.setItem('access_token_type', type)
               localStorage.setItem('user', JSON.stringify(user))
@@ -84,7 +89,11 @@ export default new Vuex.Store({
         commit('logout')
         localStorage.clear()
         sessionStorage.setItem('logout', 'logout')
-        delete axios.defaults.headers.common['Authorization']
+        axios({ url: '/logout' })
+          .then(() => {
+            delete axios.defaults.headers.common['Authorization']
+          })
+          .catch(() => {})
         resolve()
         return false
       })
@@ -95,17 +104,18 @@ export default new Vuex.Store({
           token = localStorage.getItem('access_token'),
           user = localStorage.getItem('user')
         if (type && token && user) {
-          commit('auth_success', {type:type, token:token, user: JSON.parse(user)})
+          commit('auth_success', { type: type, token: token, user: JSON.parse(user) })
           axios.defaults.headers.common['Authorization'] = `${type} ${token}`
         }
         axios({ url: '/token' })
           .then(() => {})
-          .catch(() => {})
+          .catch(error => {})
       })
     }
   },
   getters: {
     isLoggedIn: state => !!state.token,
-    authStatus: state => state.status
+    authStatus: state => state.status,
+    user: state => state.user
   }
 })

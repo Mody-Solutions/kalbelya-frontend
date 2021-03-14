@@ -36,6 +36,7 @@
                               class="mb-3"
                               name="email"
                               :rules="{required: true, email: true}"
+                              :disabled="loading"
                               prepend-icon="ni ni-email-83"
                               placeholder="Email"
                               v-model="model.email">
@@ -45,15 +46,19 @@
                               class="mb-3"
                               name="password"
                               :rules="{required: true}"
+                              :disabled="loading"
                               prepend-icon="ni ni-lock-circle-open"
                               type="password"
                               placeholder="Clave"
                               v-model="model.password">
                   </base-input>
 
-                  <b-form-checkbox v-model="model.rememberMe">Recordarme</b-form-checkbox>
+                  <b-form-checkbox :disabled="loading" v-model="model.rememberMe">Recordarme</b-form-checkbox>
                   <div class="text-center">
-                    <base-button type="primary" native-type="submit" class="my-4">Entrar</base-button>
+                    <base-button type="primary" :disabled="loading" native-type="submit" class="my-4">
+                      <span v-if="!loading">Entrar</span>
+                      <span v-else><i class="fas fa-circle-notch fa-spin"></i> Entrando...</span>
+                    </base-button>
                   </div>
                 </b-form>
               </validation-observer>
@@ -76,6 +81,7 @@
   export default {
     data () {
       return {
+        loading: false,
         logout: false,
         error: false,
         model: {
@@ -90,15 +96,21 @@
       onSubmit () {
         const formValidator = this.$refs.formValidator;
         const router = this.$router;
+        const self = this;
+        this.loading = true
         this.$store.dispatch('login', this.model)
           .then(response => {
-            if(response.data.hasOwnProperty('error')){
+            if(!response.data.hasOwnProperty('user')){
               formValidator.setErrors(response.data)
+              self.loading = false;
             } else {
               router.push('/dashboard')
             }
           })
-          .catch(() => {})
+          .catch(error => {
+            self.loading = false;
+            console.info(error)
+          })
       }
     }
   }

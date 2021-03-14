@@ -32,15 +32,6 @@
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
                   <base-input alternative
                               class="mb-3"
-                              prepend-icon="ni ni-hat-3"
-                              placeholder="Nombre"
-                              name="Nombre"
-                              :rules="{required: true}"
-                              v-model="model.name">
-                  </base-input>
-
-                  <base-input alternative
-                              class="mb-3"
                               prepend-icon="ni ni-email-83"
                               placeholder="Email"
                               name="Email"
@@ -50,8 +41,28 @@
 
                   <base-input alternative
                               class="mb-3"
+                              prepend-icon="ni ni-hat-3"
+                              placeholder="Nombre"
+                              :disabled="loading"
+                              name="Nombre"
+                              :rules="{required: true}"
+                              v-model="model.firstName">
+                  </base-input>
+                  <base-input alternative
+                              class="mb-3"
+                              prepend-icon="ni ni-hat-3"
+                              placeholder="Apellido"
+                              :disabled="loading"
+                              name="Apellido"
+                              :rules="{required: true}"
+                              v-model="model.lastName">
+                  </base-input>
+
+                  <base-input alternative
+                              class="mb-3"
                               prepend-icon="ni ni-lock-circle-open"
                               placeholder="Clave"
+                              :disabled="loading"
                               type="password"
                               name="Clave"
                               vid="password"
@@ -63,6 +74,7 @@
                               class="mb-3"
                               prepend-icon="ni ni-lock-circle-open"
                               placeholder="Confirmar clave"
+                              :disabled="loading"
                               type="password"
                               name="Confirmar clave"
                               :rules="{required: true, min: 6, confirmed: 'password'}"
@@ -70,7 +82,7 @@
                   </base-input>
                   <b-row class=" my-4">
                     <b-col cols="12">
-                      <base-input :rules="{ required: { allowFalse: false } }"
+                      <base-input :rules="{ required: { allowFalse: false } }" :disabled="loading"
                                   name="Términos y condiciones">
                         <b-form-checkbox v-model="model.agree">
                           <span class="text-muted">Acepto los <a href="#!">términos y condiciones</a></span>
@@ -79,7 +91,10 @@
                     </b-col>
                   </b-row>
                   <div class="text-center">
-                    <b-button type="submit" variant="primary" class="mt-4">Crear cuenta</b-button>
+                    <b-button type="submit" variant="primary" class="mt-4" :disabled="loading">
+                      <span v-if="!loading">Crear cuenta</span>
+                      <span v-else><i class="fas fa-circle-notch fa-spin"></i> Creando cuenta...</span>
+                    </b-button>
                   </div>
                 </b-form>
               </validation-observer>
@@ -121,10 +136,12 @@
     name: 'register',
     data () {
       return {
+        loading: false,
         registered: false,
         message: '',
         model: {
-          name: '',
+          firstName: '',
+          lastName: '',
           email: '',
           password: '',
           password_confirmation: '',
@@ -138,16 +155,21 @@
       },
       onSubmit () {
         const formValidator = this.$refs.formValidator;
-        const router = this.$router;
+        const self = this;
+        this.loading = true;
         this.$store.dispatch('register', this.model)
           .then(response => {
-            if(response.data.hasOwnProperty('user')){
-              router.push('/dashboard')
-            } else {
+            if(!response.data.hasOwnProperty('user')){
               formValidator.setErrors(response.data)
+              self.loading = false;
+            } else {
+              self.message = response.data.message;
+              self.registered = true;
             }
           })
-          .catch(() => {})
+          .catch(() => {
+            self.loading = false;
+          })
       }
     }
 

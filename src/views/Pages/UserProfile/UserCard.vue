@@ -20,7 +20,7 @@
     <b-card-body class="pt-0">
       <div class="text-center mt-6">
         <h5 class="h3">
-          {{user.name}}<span class="font-weight-light">, {{user.age}}</span>
+          {{user.firstName}} {{user.lastName}}<span class="font-weight-light">, {{user.age}}</span>
         </h5>
         <div class="h5 font-weight-300">
           <i class="ni location_pin mr-2"></i>{{user.city}}, {{user.country}}
@@ -42,7 +42,6 @@ export default {
   data() {
     return {
       user: {
-        name: '',
         title: '',
         company: '',
         username: '',
@@ -58,8 +57,7 @@ export default {
     }
   },
   mounted () {
-    let user = localStorage.getItem('user');
-    this.user = user ? JSON.parse(user) : null;
+    this.user = this.$store.state.user;
   },
   methods: {
     connect() {

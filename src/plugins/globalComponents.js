@@ -12,6 +12,7 @@ import BasePagination from "@/components/BasePagination";
 import BaseAlert from "@/components/BaseAlert";
 import BaseNav from "@/components/Navbar/BaseNav";
 import BaseHeader from '@/components/BaseHeader';
+import vSelect from 'vue-select'
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { Input, Tooltip, Popover } from 'element-ui';
 /**
@@ -37,6 +38,7 @@ const GlobalComponents = {
     Vue.component(Input.name, Input);
     Vue.component('validation-provider', ValidationProvider)
     Vue.component('validation-observer', ValidationObserver)
+    Vue.component('v-select', vSelect)
     Vue.use(Tooltip);
     Vue.use(Popover);
   }

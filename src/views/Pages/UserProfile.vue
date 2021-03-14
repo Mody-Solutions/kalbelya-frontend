@@ -8,9 +8,8 @@
         <b-container fluid class="d-flex align-items-center">
           <b-row class="full-width">
             <b-col md="12">
-              <h1 class="display-2 text-white">Hola {{model.name}}</h1>
-              <p class="text-white mt-0 mb-5"></p>
-              <a href="#!" class="btn btn-info">Editar perfil</a>
+              <h1 class="display-2 text-white">Hola, {{user.firstName}}</h1>
+              <p class="text-white mt-0 mb-5">{{user.aboutMe}}</p>
             </b-col>
           </b-row>
         </b-container>
@@ -32,14 +31,11 @@
 <script>
   import EditProfileForm from './UserProfile/EditProfileForm.vue'
   import UserCard from './UserProfile/UserCard.vue'
+  import { mapGetters } from 'vuex'
 
   export default {
-    data() {
-      return {
-        model: {
-          name: ''
-        }
-      }
+    computed: {
+      ...mapGetters(['user'])
     },
     components: {
       EditProfileForm,
