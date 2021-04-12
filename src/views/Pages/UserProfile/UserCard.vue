@@ -38,26 +38,10 @@
   </b-card>
 </template>
 <script>
+  import { mapGetters } from 'vuex'
 export default {
-  data() {
-    return {
-      user: {
-        title: '',
-        company: '',
-        username: '',
-        email: '',
-        firstName: '',
-        lastName: '',
-        address: '',
-        city: '',
-        country: '',
-        postalCode: '',
-        aboutMe: ''
-      }
-    }
-  },
-  mounted () {
-    this.user = this.$store.state.user;
+  computed: {
+    ...mapGetters(['user'])
   },
   methods: {
     connect() {
